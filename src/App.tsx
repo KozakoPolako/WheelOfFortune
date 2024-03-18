@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import themes from "./themes";
+import AppHeader from "./components/AppHeader";
+import { useState } from "react";
+import WheelOfFortuneSupervisor from "./components/WheelOfFortuneSupervisor";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [currentTheme, setCurrentTheme] = useState(
+    window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? themes.darkTheme
+      : themes.lightTheme
+  );
+  function toggleTheme() {
+    setCurrentTheme(
+      currentTheme === themes.darkTheme ? themes.lightTheme : themes.darkTheme
+    );
+  }
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ThemeProvider theme={currentTheme}>
+        <CssBaseline />
+        <Box component="nav">
+          <AppHeader currentTheme={currentTheme} onThemeToggle={toggleTheme} />
+        </Box>
+        <Box component="main">
+          <div style={{height:"100px"}}></div>
+          <WheelOfFortuneSupervisor />
+        </Box>
+      </ThemeProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
