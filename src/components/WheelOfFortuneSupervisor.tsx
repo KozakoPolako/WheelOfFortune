@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WheelOfFortuneList from "./WheelOfFortuneList";
 import WheelOfFortune from "./WheelOfFortune";
 import { v4 as uuidv4 } from "uuid";
@@ -26,14 +26,34 @@ export type Options = {
 };
 
 function WheelOfFortuneSupervisor() {
-  const participantsState = useState<Participant[]>([]);
-  const [participants, setParticipants] = participantsState;
+  const [options, setOptions] = useState<Options>(initStateData().options);
+  const [participants, setParticipants] = useState<Participant[]>(
+    initStateData().participants
+  );
+
   const [winners, setWinners] = useState<Participant[]>([]);
 
-  const [options, setOptions] = useState<Options>({
-    animationSpeed: 50,
-    disableAfterPick: true,
-  });
+  useEffect(() => {
+    const state = {
+      options,
+      participants,
+    };
+    localStorage.setItem("wheelOfFortuneData", JSON.stringify(state));
+  }, [participants, options]);
+
+  function initStateData() {
+    const data = localStorage.getItem("wheelOfFortuneData");
+    const { options, participants } = data
+      ? JSON.parse(data)
+      : { options: undefined, participants: undefined };
+    return {
+      options: options ?? {
+        animationSpeed: 50,
+        disableAfterPick: true,
+      },
+      participants: participants ?? [],
+    };
+  }
 
   function setDisableAtfterPick(val: boolean) {
     setOptions({
@@ -48,40 +68,49 @@ function WheelOfFortuneSupervisor() {
     });
   }
   function disableParticipant(participant: Participant) {
-    const index = participants.findIndex((val) => val.id === participant.id);
-    if (index === -1) {
-      throw new Error("");
-    }
-    const newItems = [...participants];
-    newItems[index] = { ...participant, disable: true };
-    setParticipants(newItems);
+    setParticipants((oldVal) => {
+      const index = oldVal.findIndex((val) => val.id === participant.id);
+      if (index === -1) {
+        throw new Error("");
+      }
+      const newItems = [...participants];
+      newItems[index] = { ...participant, disable: true };
+      return newItems;
+    });
   }
   function setParticipant(participant: Participant) {
-    const index = participants.findIndex((val) => val.id === participant.id);
-    if (index == -1) {
-      throw new Error(`cannot find element with id: ${participant.id}`);
-    }
-    const newItems = [...participants];
-    newItems[index] = participant;
-    setParticipants(newItems);
+    setParticipants((oldVal) => {
+      const index = oldVal.findIndex((val) => val.id === participant.id);
+      if (index == -1) {
+        throw new Error(`cannot find element with id: ${participant.id}`);
+      }
+      const newItems = [...oldVal];
+      newItems[index] = participant;
+      return newItems;
+    });
   }
   function removeParticipant(participant: Participant) {
-    const index = participants.findIndex((val) => val.id === participant.id);
-    if (index == -1) {
-      throw new Error(`cannot find element with id: ${participant.id}`);
-    }
-    const newItems = [...participants];
-    newItems.splice(index, 1);
-    setParticipants(newItems);
+    console.log(participant);
+    setParticipants((oldVal) => {
+      const index = oldVal.findIndex((val) => val.id === participant.id);
+      if (index == -1) {
+        throw new Error(`cannot find element with id: ${participant.id}`);
+      }
+      const newItems = [...oldVal];
+      newItems.splice(index, 1);
+      return newItems;
+    });
   }
   function appendParticipant() {
-    const newItems = [...participants];
-    newItems.push({
-      id: uuidv4(),
-      text: "",
-      disable: false,
+    setParticipants((oldVal) => {
+      const newItems = [...oldVal];
+      newItems.push({
+        id: uuidv4(),
+        text: "",
+        disable: false,
+      });
+      return newItems;
     });
-    setParticipants(newItems);
   }
   function appendWinner(participant: Participant) {
     setWinners((oldVal) => [...oldVal, participant]);

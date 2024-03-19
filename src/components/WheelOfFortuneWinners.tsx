@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Card,
+  Collapse,
   Divider,
   List,
   ListItem,
@@ -11,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 type Props = {
   winners: Participant[];
@@ -29,7 +31,11 @@ export default function WheelOfFortuneWinners({ winners, actions }: Props) {
           </Typography>
         </Grid2>
         <Grid2 xs="auto">
-          <Button startIcon={<DeleteOutline />} onClick={actions.clearWinners}>
+          <Button
+            startIcon={<DeleteOutline />}
+            onClick={actions.clearWinners}
+            sx={{ borderRadius: 5, px: 2 }}
+          >
             Clear list
           </Button>
         </Grid2>
@@ -49,9 +55,15 @@ export default function WheelOfFortuneWinners({ winners, actions }: Props) {
 }
 
 function WinnerItem({ item }: { item: Participant }) {
+  const [isIn, setIsIn] = useState(false);
+  useEffect(() => {
+    setIsIn(true);
+  }, []);
   return (
-    <ListItem>
-      <ListItemText>{item.text}</ListItemText>
-    </ListItem>
+    <Collapse in={isIn}>
+      <ListItem>
+        <ListItemText>{item.text}</ListItemText>
+      </ListItem>
+    </Collapse>
   );
 }

@@ -90,21 +90,7 @@ export default function WheelOfFortune({
 
   return (
     <Box>
-      <Grid2 container justifyContent="center">
-        <Grid2 xs={12} sm={6}>
-          <Button
-            disabled={!enabledParticipants.length || state.isPicking}
-            fullWidth
-            variant="contained"
-            sx={{ borderRadius: 5 }}
-            startIcon={<AutorenewIcon />}
-            onClick={getRandomParticipants}
-          >
-            Take a spin
-          </Button>
-        </Grid2>
-      </Grid2>
-      <Grid2 container justifyContent="center" sx={{mb:5}}>
+      <Grid2 container justifyContent="center" sx={{ mb: 2 }}>
         <Grid2 xs="auto" sx={{ minHeight: "115px" }}>
           <Typography
             variant="h1"
@@ -113,6 +99,20 @@ export default function WheelOfFortune({
           >
             {participants.length ? participants[currentWinnerIndex].text : ""}
           </Typography>
+        </Grid2>
+      </Grid2>
+      <Grid2 container justifyContent="center">
+        <Grid2 xs={12} sm={6}>
+          <Button
+            disabled={!enabledParticipants.length || state.isPicking}
+            fullWidth
+            variant="contained"
+            sx={{ borderRadius: 5, mb: 5 }}
+            startIcon={<AutorenewIcon />}
+            onClick={getRandomParticipants}
+          >
+            Take a spin
+          </Button>
         </Grid2>
       </Grid2>
     </Box>
