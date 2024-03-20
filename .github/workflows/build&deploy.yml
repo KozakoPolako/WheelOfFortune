@@ -1,16 +1,6 @@
-name: build
+name: build&deploy
 
-on: [push]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
+on: [push, pull_request]
 
 jobs:
   build:
@@ -32,14 +22,30 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        
-      - name: Upload artifact
+
+      - name: upload artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload dist folder
-          path: './dist'
-          
+          name: build
+          path: "./dist"
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+
+    permissions:
+      contents: read
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
-
+        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+        with:
+          artifact_name: "build"
