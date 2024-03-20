@@ -23,7 +23,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: github-pages
           path: "./dist"
 
   deploy:
@@ -35,7 +35,7 @@ jobs:
       id-token: write # to verify the deployment originates from an appropriate source
 
     environment:
-      name: build
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     runs-on: ubuntu-latest
