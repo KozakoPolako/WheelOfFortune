@@ -20,11 +20,14 @@ jobs:
       - name: build
         run: npm run build
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
       - name: upload artifacts
         uses: actions/upload-pages-artifact@v3
         with:
           name: build
-          path: dist
+          path: "./dist"
 
   deploy:
     if: github.ref == 'refs/heads/main'
