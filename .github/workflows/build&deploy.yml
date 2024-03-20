@@ -1,11 +1,10 @@
 name: build&deploy
 
-on: 
+on:
   push:
     branches:
       - main
   pull_request:
-
 
 jobs:
   build:
@@ -29,6 +28,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: upload artifacts
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           name: build
