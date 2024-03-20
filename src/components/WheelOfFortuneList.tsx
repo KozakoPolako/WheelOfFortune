@@ -181,7 +181,6 @@ function PartisipantItem({
 }) {
   const [isIn, setIsIn] = useState(false);
   useEffect(() => {
-    console.log("TSET");
     setIsIn(true);
   }, []);
   function setText(text: string) {
