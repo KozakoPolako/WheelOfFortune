@@ -25,6 +25,7 @@ jobs:
         run: npm run build
 
       - name: Setup Pages
+        if: github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v4
 
       - name: upload artifacts
