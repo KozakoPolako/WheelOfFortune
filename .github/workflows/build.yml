@@ -3,11 +3,13 @@ name: build
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
-jobs: 
+jobs:
   build:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
