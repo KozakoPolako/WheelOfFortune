@@ -19,8 +19,13 @@ export default function AppHeader({ onThemeToggle, currentTheme }: Props) {
       <Container>
         <Toolbar disableGutters>
           <Grid2 container flexGrow={1} alignItems={"center"}>
+            <Grid2 xs="auto" height="50px" sx={{pr:2}}>
+              <img src="/KoloFortuny_logo.png" height="50px" />
+            </Grid2>
             <Grid2 xs>
-              <Typography variant="h4" component="h1">Wheel of Fortune</Typography>
+              <Typography variant="h4" component="h1">
+                Wheel of Fortune
+              </Typography>
             </Grid2>
             <Grid2 xs="auto">
               <Button onClick={onThemeToggle} sx={{ color: "white" }}>
