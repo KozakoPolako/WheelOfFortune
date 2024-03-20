@@ -152,7 +152,7 @@ function WheelOfFortuneSupervisor() {
                   <Checkbox
                     defaultChecked={options.disableAfterPick}
                     value={options.disableAfterPick}
-                    onChange={(e, val) => setDisableAtfterPick(val)}
+                    onChange={(_, val) => setDisableAtfterPick(val)}
                   />
                 }
                 label="Remove participal after pick"
@@ -162,7 +162,7 @@ function WheelOfFortuneSupervisor() {
             <Box sx={{ px: 1.2 }}>
               <Slider
                 value={options.animationSpeed}
-                onChange={(e, val) => setAnimationSpeed(val as number)}
+                onChange={(_, val) => setAnimationSpeed(val as number)}
                 min={1}
                 sx={{ px: 0 }}
                 defaultValue={50}
