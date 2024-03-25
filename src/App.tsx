@@ -24,7 +24,7 @@ function App() {
           <AppHeader currentTheme={currentTheme} onThemeToggle={toggleTheme} />
         </Box>
         <Box component="main">
-          <div style={{height:"100px"}}></div>
+          <div style={{ height: "100px" }}></div>
           <WheelOfFortuneSupervisor />
         </Box>
       </ThemeProvider>
