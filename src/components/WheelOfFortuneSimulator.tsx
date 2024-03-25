@@ -142,7 +142,7 @@ type Sector = {
 };
 
 class Wheel {
-  audio = new Audio("WheepOfFortune/WheelOfFortuneSound.mp3");
+  audio = new Audio("./WheelOfFortuneSound.mp3");
 
   tot = 0;
   ctx: CanvasRenderingContext2D;

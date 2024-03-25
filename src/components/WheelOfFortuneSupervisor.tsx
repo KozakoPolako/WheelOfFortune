@@ -151,8 +151,8 @@ function WheelOfFortuneSupervisor() {
   }
   return (
     <Container>
-      <Grid2 container spacing={2} sx={{ mb: 10 }}>
-        <Grid2 xs={12} sm={8}>
+      <Grid2 container spacing={2} sx={{ mb: 10 }} wrap="wrap-reverse">
+        <Grid2 xs={12} md={8}>
           <WheelOfFortune
             participants={participants}
             options={options}
@@ -160,7 +160,7 @@ function WheelOfFortuneSupervisor() {
           />
           <WheelOfFortuneWinners winners={winners} actions={{ clearWinners }} />
         </Grid2>
-        <Grid2 xs={12} sm={4}>
+        <Grid2 xs={12} md={4}>
           <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
             Options
           </Typography>
