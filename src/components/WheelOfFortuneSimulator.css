@@ -1,0 +1,34 @@
+.wheel-container {
+  display: inline-flex;
+  position: relative;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.wheel {
+  display: block;
+}
+.wheel-pointer {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 27px 10px 0 10px;
+  transform: rotate(0deg) translate(-50%, 0);
+}
+.wheel-pointer.theme--light {
+  border-color: #000000 transparent transparent transparent;
+}
+.wheel-pointer.theme--dark {
+  border-color: #fff transparent transparent transparent;
+}
+
+.wheel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

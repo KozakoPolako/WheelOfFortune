@@ -4,7 +4,8 @@ import {
   Container,
   FormControlLabel,
   FormGroup,
-  Slider,
+  // Slider,
+  TextField,
   Typography,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -21,6 +22,7 @@ export type Participant = {
 };
 
 export type Options = {
+  spinCount: number;
   animationSpeed: number;
   disableAfterPick: boolean;
 };
@@ -41,6 +43,10 @@ function WheelOfFortuneSupervisor() {
     localStorage.setItem("wheelOfFortuneData", JSON.stringify(state));
   }, [participants, options]);
 
+  const enabledParticipants = participants.filter(
+    (val) => !val.disable && val.text
+  );
+
   function initStateData() {
     const data = localStorage.getItem("wheelOfFortuneData");
     const { options, participants } = data
@@ -48,6 +54,7 @@ function WheelOfFortuneSupervisor() {
       : { options: undefined, participants: undefined };
     return {
       options: options ?? {
+        spinCount: 1,
         animationSpeed: 50,
         disableAfterPick: true,
       },
@@ -61,11 +68,24 @@ function WheelOfFortuneSupervisor() {
       disableAfterPick: val,
     });
   }
-  function setAnimationSpeed(val: number) {
+  // function setAnimationSpeed(val: number) {
+  //   setOptions({
+  //     ...options,
+  //     animationSpeed: val,
+  //   });
+  // }
+  function setSpinCount(val: string) {
+    console.log(val);
     setOptions({
       ...options,
-      animationSpeed: val,
+      spinCount: parseInt(val),
     });
+  }
+  function validateSpinCount(val: string) {
+    if (!val) setSpinCount("1");
+    if (parseInt(val) > enabledParticipants.length - 1) {
+      setSpinCount(enabledParticipants.length - 1 + "");
+    }
   }
   function disableParticipant(participant: Participant) {
     setParticipants((oldVal) => {
@@ -73,7 +93,7 @@ function WheelOfFortuneSupervisor() {
       if (index === -1) {
         throw new Error("");
       }
-      const newItems = [...participants];
+      const newItems = [...oldVal];
       newItems[index] = { ...participant, disable: true };
       return newItems;
     });
@@ -146,6 +166,16 @@ function WheelOfFortuneSupervisor() {
           </Typography>
           <Box>
             <FormGroup>
+              <TextField
+                value={options.spinCount}
+                onChange={(e) => setSpinCount(e.target.value)}
+                onBlur={(e) => validateSpinCount(e.target.value)}
+                type="number"
+                inputProps={{ min: 1, max: enabledParticipants.length - 1 }}
+                size="small"
+                label="Spin count"
+                variant="filled"
+              ></TextField>
               <FormControlLabel
                 sx={{ mb: 1 }}
                 control={
@@ -157,9 +187,9 @@ function WheelOfFortuneSupervisor() {
                 }
                 label="Remove participal after pick"
               />
-              <Typography>Animation speed</Typography>
+              {/* <Typography>Animation speed</Typography> */}
             </FormGroup>
-            <Box sx={{ px: 1.2 }}>
+            {/* <Box sx={{ px: 1.2 }}>
               <Slider
                 value={options.animationSpeed}
                 onChange={(_, val) => setAnimationSpeed(val as number)}
@@ -169,7 +199,7 @@ function WheelOfFortuneSupervisor() {
                 aria-label="Small"
                 valueLabelDisplay="auto"
               />
-            </Box>
+            </Box> */}
           </Box>
           <Typography variant="h5" component="h2" sx={{ my: 2 }}>
             Participals

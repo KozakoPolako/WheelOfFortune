@@ -10,10 +10,15 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import themes from "../themes";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { useEffect } from "react";
 
 type Props = { onThemeToggle: () => void; currentTheme: Theme };
 
 export default function AppHeader({ onThemeToggle, currentTheme }: Props) {
+
+  useEffect(()=>{
+    console.log("MOUNTED");
+  },[])
   return (
     <AppBar position="sticky">
       <Container>
