@@ -1,7 +1,6 @@
 import { Options, Participant } from "./WheelOfFortuneSupervisor";
 import { Box } from "@mui/material";
 import WheelOfFortuneSimulator from "./WheelOfFortuneSimulator";
-import { useEffect, useRef } from "react";
 
 type Props = {
   participants: Participant[];

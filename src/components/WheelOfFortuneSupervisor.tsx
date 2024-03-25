@@ -4,7 +4,7 @@ import {
   Container,
   FormControlLabel,
   FormGroup,
-  Slider,
+  // Slider,
   TextField,
   Typography,
 } from "@mui/material";
@@ -68,12 +68,12 @@ function WheelOfFortuneSupervisor() {
       disableAfterPick: val,
     });
   }
-  function setAnimationSpeed(val: number) {
-    setOptions({
-      ...options,
-      animationSpeed: val,
-    });
-  }
+  // function setAnimationSpeed(val: number) {
+  //   setOptions({
+  //     ...options,
+  //     animationSpeed: val,
+  //   });
+  // }
   function setSpinCount(val: string) {
     console.log(val);
     setOptions({
