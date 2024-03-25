@@ -75,7 +75,6 @@ function WheelOfFortuneSupervisor() {
   //   });
   // }
   function setSpinCount(val: string) {
-    console.log(val);
     setOptions({
       ...options,
       spinCount: parseInt(val),
@@ -83,7 +82,10 @@ function WheelOfFortuneSupervisor() {
   }
   function validateSpinCount(val: string) {
     if (!val) setSpinCount("1");
-    if (parseInt(val) > enabledParticipants.length - 1) {
+    if (
+      options.disableAfterPick &&
+      parseInt(val) > enabledParticipants.length - 1
+    ) {
       setSpinCount(enabledParticipants.length - 1 + "");
     }
   }
@@ -110,7 +112,6 @@ function WheelOfFortuneSupervisor() {
     });
   }
   function removeParticipant(participant: Participant) {
-    console.log(participant);
     setParticipants((oldVal) => {
       const index = oldVal.findIndex((val) => val.id === participant.id);
       if (index == -1) {
@@ -171,7 +172,12 @@ function WheelOfFortuneSupervisor() {
                 onChange={(e) => setSpinCount(e.target.value)}
                 onBlur={(e) => validateSpinCount(e.target.value)}
                 type="number"
-                inputProps={{ min: 1, max: enabledParticipants.length - 1 }}
+                inputProps={{
+                  min: 1,
+                  max: options.disableAfterPick
+                    ? enabledParticipants.length - 1
+                    : undefined,
+                }}
                 size="small"
                 label="Spin count"
                 variant="filled"

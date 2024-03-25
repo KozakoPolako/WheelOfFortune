@@ -51,7 +51,6 @@ function WheelOfFortuneSimulator({ participants, onWheelSpin }: Props) {
 
   useEffect(() => {
     if (!wheel.current) return;
-    console.log("RedrawWheel");
     wheel.current.drawSectors(
       participants
         .filter((val) => !val.disable && val.text)
@@ -262,7 +261,6 @@ class Wheel {
 
   public drawSectors(sectors: Sector[]) {
     if (!sectors.length) {
-      console.log("Drawing: ", sectors);
       this.drawSector(
         {
           id: "",
