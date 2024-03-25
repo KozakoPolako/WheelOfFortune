@@ -2,9 +2,9 @@ import { VitePWAOptions } from "vite-plugin-pwa";
 export const manifestForPlugin: Partial<VitePWAOptions> = {
   registerType: "prompt",
   manifest: {
-    name: "React-vite-app",
-    short_name: "react-vite-app",
-    description: "I am a simple vite app",
+    name: "WheelOfFortune",
+    short_name: "WheelOfFortune",
+    description: "WheelOfFortune simulator app",
     icons: [
       {
         src: "icons/manifest-icon-192.maskable.png",
