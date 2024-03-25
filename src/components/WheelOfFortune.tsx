@@ -24,8 +24,10 @@ export default function WheelOfFortune({
     spinWheel: () => Promise<Participant | undefined>
   ) {
     for (let i = 0; i < options.spinCount; i++) {
+      console.log("spin no. :", i + 1);
       const winner = await spinWheel();
       if (!winner) return;
+      await new Promise((r) => setTimeout(r, 500));
       actions.appendWinner(winner);
       if (options.disableAfterPick) {
         actions.disableParticipant(winner);
