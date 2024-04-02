@@ -25,12 +25,14 @@ export type Options = {
   spinCount: number;
   animationSpeed: number;
   disableAfterPick: boolean;
+  randomStartPoint: boolean;
 };
 
 function WheelOfFortuneSupervisor() {
-  const [options, setOptions] = useState<Options>(initStateData().options);
+  const savedState = initStateData()
+  const [options, setOptions] = useState<Options>(savedState.options);
   const [participants, setParticipants] = useState<Participant[]>(
-    initStateData().participants
+    savedState.participants
   );
 
   const [winners, setWinners] = useState<Participant[]>([]);
@@ -47,7 +49,7 @@ function WheelOfFortuneSupervisor() {
     (val) => !val.disable && val.text
   );
 
-  function initStateData() {
+  function initStateData(): { options: Options; participants: Participant[] } {
     const data = localStorage.getItem("wheelOfFortuneData");
     const { options, participants } = data
       ? JSON.parse(data)
@@ -57,16 +59,23 @@ function WheelOfFortuneSupervisor() {
         spinCount: 1,
         animationSpeed: 50,
         disableAfterPick: true,
+        randomStartPoint: false,
       },
       participants: participants ?? [],
     };
   }
 
   function setDisableAtfterPick(val: boolean) {
-    setOptions({
-      ...options,
+    setOptions((oldVal) => ({
+      ...oldVal,
       disableAfterPick: val,
-    });
+    }));
+  }
+  function setRandomStartPoint(val: boolean) {
+    setOptions((oldVal) => ({
+      ...oldVal,
+      randomStartPoint: val,
+    }));
   }
   // function setAnimationSpeed(val: number) {
   //   setOptions({
@@ -183,15 +192,23 @@ function WheelOfFortuneSupervisor() {
                 variant="filled"
               ></TextField>
               <FormControlLabel
-                sx={{ mb: 1 }}
                 control={
                   <Checkbox
-                    defaultChecked={options.disableAfterPick}
-                    value={options.disableAfterPick}
+                    checked={options.disableAfterPick}
                     onChange={(_, val) => setDisableAtfterPick(val)}
                   />
                 }
                 label="Remove participal after pick"
+              />
+              <FormControlLabel
+                sx={{ mb: 1 }}
+                control={
+                  <Checkbox
+                    checked={options.randomStartPoint}
+                    onChange={(_, val) => setRandomStartPoint(val)}
+                  />
+                }
+                label="Random start point"
               />
               {/* <Typography>Animation speed</Typography> */}
             </FormGroup>
