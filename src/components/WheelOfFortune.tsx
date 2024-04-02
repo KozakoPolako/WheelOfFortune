@@ -40,6 +40,7 @@ export default function WheelOfFortune({
       <Box sx={{ mb: 4 }}>
         <WheelOfFortuneSimulator
           participants={participants}
+          options={options}
           onWheelSpin={onWheelSpin}
         />
       </Box>

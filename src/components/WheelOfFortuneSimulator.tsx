@@ -1,5 +1,5 @@
-import { Button, Typography, useTheme } from "@mui/material";
-import { Participant } from "./WheelOfFortuneSupervisor";
+import { Button, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Options, Participant } from "./WheelOfFortuneSupervisor";
 import { useEffect, useRef, useState } from "react";
 import "./WheelOfFortuneSimulator.css";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -8,6 +8,7 @@ const SIZE = 500;
 
 type Props = {
   participants: Participant[];
+  options: Options;
   onWheelSpin: (
     spinWheel: () => Promise<Participant | undefined>
   ) => Promise<void>;
@@ -26,13 +27,19 @@ const stringToColour = (str: string) => {
   return colour;
 };
 
-function WheelOfFortuneSimulator({ participants, onWheelSpin }: Props) {
+function WheelOfFortuneSimulator({
+  participants,
+  onWheelSpin,
+  options,
+}: Props) {
   const [isSpinning, setIsSpinning] = useState(false);
   const theme = useTheme();
   const elWheel = useRef<HTMLCanvasElement>(null);
+  const smAndUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   const wheel = useRef<Wheel>();
 
+  const size = smAndUp ? SIZE : 300;
   // const sectors: Sector[] = participants
   //   .filter((val) => !val.disable && val.text)
   //   .map((val) => ({
@@ -60,13 +67,13 @@ function WheelOfFortuneSimulator({ participants, onWheelSpin }: Props) {
           label: val.text,
         }))
     );
-  }, [participants]);
+  }, [participants, smAndUp]);
 
   async function spinWheel() {
     setIsSpinning(true);
     await onWheelSpin(async () => {
       if (!wheel.current) return;
-      const winner = await wheel.current.spinWheel();
+      const winner = await wheel.current.spinWheel(options.randomStartPoint);
       if (winner) {
         return participants.find((val) => val.id === winner.id);
       }
@@ -107,8 +114,8 @@ function WheelOfFortuneSimulator({ participants, onWheelSpin }: Props) {
             }}
             className="wheel"
             ref={elWheel}
-            width={SIZE}
-            height={SIZE}
+            width={size}
+            height={size}
           ></canvas>
           {!isSpinning &&
           participants.filter((val) => !val.disable && val.text).length > 1 ? (
@@ -260,6 +267,8 @@ class Wheel {
   }
 
   public drawSectors(sectors: Sector[]) {
+    this.dia = this.ctx.canvas.width;
+    this.rad = this.dia / 2;
     if (!sectors.length) {
       this.drawSector(
         {
@@ -281,13 +290,19 @@ class Wheel {
     this.drawWheel();
     this.rotate();
   }
-  public async spinWheel(): Promise<Sector | undefined> {
+  public async spinWheel(
+    randomStartPoint: boolean
+  ): Promise<Sector | undefined> {
     if (this.isSpinning) return;
     return new Promise((resolve) => {
       this.resolve = resolve;
       this.isSpinning = true;
       this.isAccelerating = true;
-      this.angVelMax = this.rand(0.25, 1.5);
+      this.angVelMax = this.rand(0.25, 5);
+      if (randomStartPoint) {
+        this.ang = this.rand(0, 2 * Math.PI);
+        this.rotate();
+      }
       this.engine();
     });
   }
