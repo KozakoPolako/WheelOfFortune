@@ -34,8 +34,8 @@ export const manifestForPlugin: Partial<VitePWAOptions> = {
     theme_color: "#171717",
     background_color: "#f0e7db",
     display: "standalone",
-    scope: "/WheepOfFortune",
-    start_url: "/WheepOfFortune",
+    scope: "/WheelOfFortune",
+    start_url: "/WheelOfFortune",
     orientation: "portrait",
   },
 };

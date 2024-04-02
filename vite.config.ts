@@ -6,6 +6,6 @@ import { manifestForPlugin }  from "./src/manifestForPlugin"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/WheepOfFortune",
+  base: "/WheelOfFortune",
   plugins: [react(), VitePWA(manifestForPlugin)],
 })
