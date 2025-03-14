@@ -1,4 +1,4 @@
-import { Participant } from "./WheelOfFortuneSupervisor";
+import {Participant} from "./WheelOfFortuneSupervisor";
 import {
   Box,
   ButtonBase,
@@ -18,7 +18,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 
 type Props = {
   participants: Participant[];
@@ -29,7 +29,7 @@ type Props = {
   };
 };
 
-function WheelOfFortuneList({ participants, actions }: Props) {
+function WheelOfFortuneList({participants, actions}: Props) {
   const [checked, setChecked] = useState<Participant[]>([]);
 
   const isInited = useRef(false);
@@ -58,20 +58,25 @@ function WheelOfFortuneList({ participants, actions }: Props) {
   function isChecked(participant: Participant) {
     return checked.findIndex((val) => val.id === participant.id) !== -1;
   }
+
   function checkAll() {
     setChecked([...participants]);
   }
+
   function uncheckAll() {
     setChecked([]);
   }
+
   function setSelectedVisibility(disable: boolean) {
-    checked.forEach((val) => actions.setItem({ ...val, disable }));
+    checked.forEach((val) => actions.setItem({...val, disable}));
     uncheckAll();
   }
+
   function removeSelected() {
     checked.forEach((val) => actions.removeItem(val));
     uncheckAll();
   }
+
   function removeItem(participant: Participant) {
     actions.removeItem(participant);
     const checkIndex = checked.indexOf(participant);
@@ -79,6 +84,14 @@ function WheelOfFortuneList({ participants, actions }: Props) {
       setChecked([...checked].splice(checkIndex, 1));
     }
   }
+
+  async function appendItem() {
+    actions.appendItem();
+    await new Promise((r) => setTimeout(r, 300));
+    const inputs = document.querySelectorAll<HTMLInputElement>(".participants-item input");
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }
+
   return (
     <>
       <Collapse in={participants.length > 1}>
@@ -101,7 +114,7 @@ function WheelOfFortuneList({ participants, actions }: Props) {
               onChange={() => (isCheckedAll ? uncheckAll() : checkAll())}
             />
           </Grid2>
-          <Grid2 xs />
+          <Grid2 xs/>
           <Grid2 xs="auto">
             <IconButton
               size="small"
@@ -109,9 +122,9 @@ function WheelOfFortuneList({ participants, actions }: Props) {
               onClick={() => setSelectedVisibility(isDisabledAll)}
             >
               {isDisabledAll && checked.length ? (
-                <VisibilityOffIcon />
+                <VisibilityOffIcon/>
               ) : (
-                <VisibilityIcon />
+                <VisibilityIcon/>
               )}
             </IconButton>
           </Grid2>
@@ -121,7 +134,7 @@ function WheelOfFortuneList({ participants, actions }: Props) {
               color="primary"
               onClick={() => removeSelected()}
             >
-              <DeleteOutlineIcon />
+              <DeleteOutlineIcon/>
             </IconButton>
           </Grid2>
         </Grid2>
@@ -137,7 +150,8 @@ function WheelOfFortuneList({ participants, actions }: Props) {
           }}
         >
           {participants.map((item) => (
-            <Box key={item.id}>
+            <Box key={item.id} className="participants-item">
+
               <PartisipantItem
                 item={item}
                 onChange={actions.setItem}
@@ -147,12 +161,12 @@ function WheelOfFortuneList({ participants, actions }: Props) {
                 handleToggle={handleToggle}
                 isChecked={isChecked}
               />
-              <Divider />
+              <Divider/>
             </Box>
           ))}
-          <ListItem sx={{ padding: 0 }}>
-            <ListItemButton onClick={actions.appendItem}>
-              <AddIcon sx={{ mr: 2 }} />
+          <ListItem sx={{padding: 0}}>
+            <ListItemButton onClick={appendItem}>
+              <AddIcon sx={{mr: 2}}/>
               <ListItemText>Add</ListItemText>
             </ListItemButton>
           </ListItem>
@@ -163,14 +177,14 @@ function WheelOfFortuneList({ participants, actions }: Props) {
 }
 
 function PartisipantItem({
-  item,
-  isInited,
-  onChange,
-  removeItem,
-  appendItem,
-  handleToggle,
-  isChecked,
-}: {
+                           item,
+                           isInited,
+                           onChange,
+                           removeItem,
+                           appendItem,
+                           handleToggle,
+                           isChecked,
+                         }: {
   item: Participant;
   isInited: boolean;
   onChange: (participant: Participant) => void;
@@ -183,12 +197,14 @@ function PartisipantItem({
   useEffect(() => {
     setIsIn(true);
   }, []);
+
   function setText(text: string) {
     onChange({
       ...item,
       text: text,
     });
   }
+
   function toggleVisable() {
     onChange({
       ...item,
@@ -201,6 +217,7 @@ function PartisipantItem({
       appendItem();
     }
   }
+
   async function remove(participant: Participant) {
     setIsIn(false);
     await new Promise((r) => setTimeout(r, 300));
@@ -209,13 +226,13 @@ function PartisipantItem({
 
   return (
     <Collapse in={isIn}>
-      <ListItem sx={{ padding: 0 }} key={item.id}>
+      <ListItem sx={{padding: 0}} key={item.id}>
         <ListItemButton
           disabled={item.disable}
-          sx={{ pointerEvents: "unset !important" }}
+          sx={{pointerEvents: "unset !important"}}
         >
           <Grid2 container alignItems={"center"} flexGrow={1}>
-            <Grid2 xs="auto" sx={{ pr: 1 }}>
+            <Grid2 xs="auto" sx={{pr: 1}}>
               <ButtonBase onClick={() => handleToggle(item)} disableRipple>
                 <Checkbox
                   size="small"
@@ -234,12 +251,12 @@ function PartisipantItem({
                 value={item.text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={onKeydownEnter}
-                sx={{ paddingBottom: "-4px" }}
+                sx={{paddingBottom: "-4px"}}
               />
             </Grid2>
             <Grid2 xs="auto">
               <IconButton onClick={toggleVisable} size="small" color="primary">
-                {item.disable ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                {item.disable ? <VisibilityOffIcon/> : <VisibilityIcon/>}
               </IconButton>
             </Grid2>
             <Grid2 xs="auto">
@@ -250,7 +267,7 @@ function PartisipantItem({
                 size="small"
                 color="primary"
               >
-                <DeleteOutlineIcon />
+                <DeleteOutlineIcon/>
               </IconButton>
             </Grid2>
           </Grid2>
