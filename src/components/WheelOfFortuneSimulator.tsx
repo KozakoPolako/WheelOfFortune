@@ -175,7 +175,7 @@ class Wheel {
 
   constructor(
     ctx2d: CanvasRenderingContext2D,
-    friction = 0.994,
+    friction = 0.982,
     angVelMin = 0.001
   ) {
     this.ctx = ctx2d;
@@ -232,7 +232,7 @@ class Wheel {
     // Accelerate
     if (this.isAccelerating) {
       this.angVel ||= this.angVelMin; // Initial velocity kick
-      this.angVel *= 1.06; // Accelerate
+      this.angVel *= 1.2; // Accelerate
     }
     // Decelerate
     else {
